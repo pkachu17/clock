@@ -1,7 +1,7 @@
 import React from 'react';
 import "./clock.css"
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import Draggable from 'react-draggable';
 
 const Clock = ()=>{
 
@@ -18,6 +18,7 @@ const Clock = ()=>{
     });
 
     useEffect(() => {
+        getquotes();
         setInterval(() => {
             getquotes();
         }, 60000);
@@ -27,7 +28,7 @@ const Clock = ()=>{
     const [author, setAuthor] = useState("");
 
     const getquotes = async()=>{
-        const response = await fetch("https://type.fit/api/quotes").then(function(response) {
+        await fetch("https://type.fit/api/quotes").then(function(response) {
             return response.json();
           })
           .then(function(data) {
@@ -42,12 +43,14 @@ const Clock = ()=>{
 
     return(
         <div className="clockpage">
-            <div className="panel">
+                <Draggable>
                 <div className="panelup">{time.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true})}
                     <div className="panelupdown">{days[time.getDay()]}, {time.getDate()}  {months[time.getMonth()]}</div>
                 </div>
-                <div className="panelmid">{quote}<br />-{author}</div>
-            </div>
+                </Draggable>
+                <Draggable>
+                <div className="panelmid">{quote}<br />- {author}</div>
+                </Draggable>
         </div>
     )
 }
